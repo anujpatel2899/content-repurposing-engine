@@ -14,6 +14,17 @@ from utils import extract_from_url, extract_from_file
 # Load environment variables
 load_dotenv()
 
+# =============================================================================
+# RATE LIMITING CONFIGURATION
+# =============================================================================
+MAX_FREE_REQUESTS = 10  # Maximum free requests per session using app's API key
+
+# Initialize session state for rate limiting
+if 'request_count' not in st.session_state:
+    st.session_state.request_count = 0
+if 'using_own_key' not in st.session_state:
+    st.session_state.using_own_key = False
+
 st.set_page_config(
     page_title="Content Repurposing Engine",
     page_icon="✨",
@@ -24,7 +35,7 @@ st.set_page_config(
 inject_custom_css()
 
 st.title("Content Repurposing Engine")
-st.caption("Powered by LangGraph + Groq + Gemini | 🚀 Now with Live Streaming!")
+st.caption("Powered by LangGraph + Groq + Gemini | Human-like content generation")
 
 # --- Sidebar Configuration ---
 with st.sidebar:
@@ -36,27 +47,52 @@ with st.sidebar:
     groq_key = st.text_input("Groq API Key", type="password", help="Get free key at console.groq.com")
     google_key = st.text_input("Google API Key (Optional)", type="password", help="For PDF uploads")
     
-    # Load from .env
-    if not groq_key:
-        load_dotenv()
-        if os.getenv("GROQ_API_KEY"):
-            groq_key = os.getenv("GROQ_API_KEY")
-            st.success("✅ Groq API Key loaded")
+    # Check if user entered their own key
+    user_entered_key = False
     
-    if not google_key:
-        if os.getenv("GOOGLE_API_KEY"):
-            google_key = os.getenv("GOOGLE_API_KEY")
-            st.success("✅ Google API Key loaded")
+    # Load from secrets (Streamlit Cloud) first
+    app_groq_key = None
+    try:
+        app_groq_key = st.secrets.get("GROQ_API_KEY", None)
+    except:
+        pass
     
+    # If user entered a key manually
     if groq_key:
         groq_key = groq_key.strip()
+        user_entered_key = True
         st.session_state['groq_api_key'] = groq_key
+        st.session_state['using_own_key'] = True
         os.environ['GROQ_API_KEY'] = groq_key
+        st.success("✅ Using YOUR API key (unlimited)")
+    # Else try to load from secrets or .env
+    elif app_groq_key:
+        groq_key = app_groq_key
+        st.session_state['groq_api_key'] = groq_key
+        st.session_state['using_own_key'] = False
+        os.environ['GROQ_API_KEY'] = groq_key
+        remaining = MAX_FREE_REQUESTS - st.session_state.request_count
+        if remaining > 0:
+            st.info(f"🎁 Free requests: {remaining}/{MAX_FREE_REQUESTS}")
+        else:
+            st.warning("⚠️ Free limit reached. Enter your own key!")
+    elif os.getenv("GROQ_API_KEY"):
+        groq_key = os.getenv("GROQ_API_KEY")
+        st.session_state['groq_api_key'] = groq_key
+        st.session_state['using_own_key'] = False
+        remaining = MAX_FREE_REQUESTS - st.session_state.request_count
+        if remaining > 0:
+            st.info(f"🎁 Free requests: {remaining}/{MAX_FREE_REQUESTS}")
+        else:
+            st.warning("⚠️ Free limit reached. Enter your own key!")
     
     if google_key:
         google_key = google_key.strip()
         st.session_state['google_api_key'] = google_key
         os.environ['GOOGLE_API_KEY'] = google_key
+    elif os.getenv("GOOGLE_API_KEY"):
+        google_key = os.getenv("GOOGLE_API_KEY")
+        st.session_state['google_api_key'] = google_key
     
     st.divider()
     
@@ -219,8 +255,24 @@ if raw_text:
 # --- Generation Trigger ---
 st.divider()
 
+# Show rate limit status if using app's key
+if not st.session_state.get('using_own_key', False):
+    remaining = MAX_FREE_REQUESTS - st.session_state.request_count
+    if remaining > 0:
+        st.info(f"🎁 **{remaining} free generations remaining** | Enter your own Groq API key for unlimited use!")
+    else:
+        st.error("⚠️ **Free limit reached!** Enter your own Groq API key in the sidebar to continue.")
+        st.markdown("👉 Get a free key at [console.groq.com](https://console.groq.com)")
+
 if st.button("Generate Content", type="primary"):
     groq_api_key = st.session_state.get('groq_api_key', '') or os.getenv('GROQ_API_KEY', '')
+    
+    # Check rate limit if using app's key
+    using_own_key = st.session_state.get('using_own_key', False)
+    if not using_own_key and st.session_state.request_count >= MAX_FREE_REQUESTS:
+        st.error("🚫 You've used all your free requests!")
+        st.warning("**To continue:**\n1. Go to [console.groq.com](https://console.groq.com)\n2. Create a free account\n3. Copy your API key\n4. Paste it in the sidebar")
+        st.stop()
     
     if 'raw_text' not in st.session_state or not st.session_state['raw_text']:
         st.error("Please provide source content first.")
@@ -229,6 +281,10 @@ if st.button("Generate Content", type="primary"):
     elif not groq_api_key:
         st.error("Please enter your Groq API Key.")
     else:
+        # Increment counter BEFORE generation if using app's key
+        if not using_own_key:
+            st.session_state.request_count += 1
+        
         # Create status container for streaming updates
         status_container = st.status("🚀 Starting workflow...", expanded=True)
         
@@ -247,7 +303,7 @@ if st.button("Generate Content", type="primary"):
                 audience=audience,
                 ab_testing=st.session_state.get('ab_testing', False),
                 groq_api_key=groq_api_key,
-                best_posts=st.session_state.get('best_posts', '')  # NEW: Phase 2
+                best_posts=st.session_state.get('best_posts', '')
             ):
                 event_type = event.get("type")
                 message = event.get("message", "")

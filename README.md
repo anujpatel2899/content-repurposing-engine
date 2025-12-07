@@ -7,9 +7,25 @@
 
 ---
 
-## 📌 Video Demo Link
+## � TRY IT LIVE NOW!
 
-🎥 **Demo Video:** [Watch on Loom](https://www.loom.com/share/514c53306de54d7ea8cbc6d6053d2463)
+<div align="center">
+
+### 👇 **Click below to use the app instantly - no installation required!** 👇
+
+# [![Try the App](https://img.shields.io/badge/🎯_TRY_THE_APP-repurposemycontent.streamlit.app-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://repurposemycontent.streamlit.app/)
+
+### **[https://repurposemycontent.streamlit.app](https://repurposemycontent.streamlit.app/)**
+
+*Just add your free Groq API key and start generating!*
+
+</div>
+
+---
+
+## �📌 Video Demo Link
+
+🎥 **Demo Video:** [Watch on Loom](https://www.loom.com/share/79e195215777475b9149d401b4eaa80f)
 
 **Video Contents:**
 - Problem explanation (0:00-0:30)
@@ -285,8 +301,7 @@ pydantic==2.9.2
 
 ### **Step 1: Clone Repository**
 ```bash
-git clone <your-repo-url>
-cd Sankar-main
+git clone https://github.com/anujpatel2899/content-repurposing-engine.git
 ```
 
 ### **Step 2: Create Virtual Environment**
