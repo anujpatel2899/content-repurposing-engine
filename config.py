@@ -10,10 +10,9 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")  # Required for all content generat
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "")  # Optional: Only for PDF/DOCX vision processing
 
 # Model Configuration
-# Valid Groq models: openai/gpt-oss-120b,openai/gpt-oss-20b
 GROQ_MODEL = "openai/gpt-oss-120b"  # Fast and powerful
 
-# Speech-to-Text Configuration (Phase 3)
+# Speech-to-Text Configuration
 GROQ_WHISPER_MODEL = "whisper-large-v3-turbo"  # Fast transcription
 MAX_RECORDING_DURATION = 300  # 5 minutes in seconds
 
@@ -27,17 +26,15 @@ SUPPORTED_PLATFORMS = [
     "Substack"
 ]
 
-# Generation Settings
-MAX_CRITIQUE_ITERATIONS = 2
+# Generation Settings (Simplified - no critic/reviser loop anymore)
 RATE_LIMIT_DELAY = 0.1  # Minimal delay for Groq
 
-# Phase 3: Feature Toggles (can disable if issues)
+# Feature Toggles
 ENABLE_PARALLEL_PROCESSING = True   # Generate all platforms simultaneously
 ENABLE_STYLE_CACHING = True         # Cache analyzed writing styles
-ENABLE_SESSION_HISTORY = False      # Save generation history (requires Firestore)
-ENABLE_BATCH_MODE = False           # Batch processing (future feature)
+ENABLE_CONTENT_CLEANUP = True       # Post-process to remove AI patterns
 
-# Phase 3: Cache Settings
+# Cache Settings
 CACHE_DIR = Path.home() / ".content_repurposing_cache"
 CACHE_DIR.mkdir(exist_ok=True)
 STYLE_CACHE_FILE = CACHE_DIR / "style_guides.json"

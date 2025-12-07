@@ -1,14 +1,13 @@
-
 # Content Repurposing Engine (CRE)
 **Build-A-Thon 2025**
 
 [![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io)
-[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
+[![LangGraph](https://img.shields.io/badge/LangGraph-4A90D9?style=for-the-badge&logo=langchain&logoColor=white)](https://langchain.com)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 
 ---
 
-## 📌  Video Demo Link
+## 📌 Video Demo Link
 
 🎥 **Demo Video:** [Watch on Loom](https://www.loom.com/share/514c53306de54d7ea8cbc6d6053d2463)
 
@@ -22,6 +21,7 @@
 - Mobile responsiveness (3:30-4:00)
 
 ---
+
 ## 📌 A. Problem Statement
 
 **The Challenge:**
@@ -36,7 +36,7 @@ Content creators, marketers, and businesses spend 5-7 hours per week manually ad
 - ❌ Inconsistent messaging across platforms
 - ❌ Missing platform-specific best practices
 - ❌ No A/B testing variations
-- ❌ Difficulty maintaining brand voice
+- ❌ AI-generated content often sounds robotic
 
 **Who Faces This:**
 - Content creators managing 3+ platforms
@@ -48,217 +48,280 @@ Content creators, marketers, and businesses spend 5-7 hours per week manually ad
 
 ## 📌 B. Solution Overview
 
-**Content Repurposing Engine (CRE)** is an AI-powered platform that transforms any source content (blog, PDF, URL) into platform-optimized variations in **under 2 seconds**.
+**Content Repurposing Engine (CRE)** is an AI-powered platform that transforms any source content (blog, PDF, URL, voice) into platform-optimized variations in **under 20 seconds**.
 
 ### **Key Innovation:**
-Instead of generic "content shortening," CRE uses a **multi-agent AI workflow** that:
-1. **Extracts Core Message** - Identifies the non-negotiable essence
-2. **Generates Platform-Native Content** - Adapts tone, structure, and format
-3. **Validates Compliance** - Checks character limits, hashtags, hooks
-4. **Provides A/B Variations** - 3 distinct angles for testing
+Unlike generic AI tools, CRE uses a **streamlined LangGraph workflow** with:
+1. **Smart Content Extraction** - From text, URL, files, or voice
+2. **Style Cloning** - Matches your writing voice from best posts
+3. **Human-Like Generation** - Anti-AI detection patterns built-in
+4. **Parallel Processing** - Generate for multiple platforms simultaneously
+5. **Post-Processing Cleanup** - Removes AI patterns automatically
+
+### **What Makes It Different:**
+- 🚫 **No em dashes** - Automatically removed
+- 🚫 **No AI buzzwords** - "delve", "crucial", "leverage" replaced
+- 🚫 **No quote emphasis** - Cleaned automatically
+- ✅ **Human authenticity** - Contractions, varied sentences, natural flow
+- ✅ **Your voice** - Style matching from your best posts
 
 ### **Expected Impact:**
-- ⚡ **90% time savings** (5-7 hours → 30 minutes/week)
+- ⚡ **80% time savings** (5-7 hours → 1 hour/week)
 - 📈 **Higher engagement** through platform-native content
-- ✅ **Zero compliance errors** (auto-validates limits)
-- 🎯 **Better A/B testing** with 3 variations per platform
+- ✅ **Undetectable as AI** - Passes AI detection tests
+- 🎯 **Better A/B testing** with 3 distinct variations
 
 ### **Value Proposition:**
-> "One source content → 6 platform-optimized versions → in 2 seconds"
+> "One source content → 2 platform-optimized versions → in 20 seconds → sounds human"
 
 ---
 
 ## 📌 C. Architecture Diagram
 
+### **Current Optimized Flow:**
+
 ```mermaid
 graph TB
-    A[User Input] --> B{Input Type}
-    B -->|Text| C[Core Message Agent]
-    B -->|URL| D[Jina AI Reader]
-    B -->|File| E[Gemini File API]
+    subgraph Input["📥 INPUT LAYER"]
+        A1[Text Paste]
+        A2[URL]
+        A3[File Upload]
+        A4[Voice Recording]
+    end
     
-    D --> C
-    E --> C
+    subgraph Extraction["🔍 EXTRACTION"]
+        B1[Jina AI Reader]
+        B2[Gemini File API]
+        B3[Groq Whisper STT]
+        B4[Direct Text]
+    end
     
-    C --> F[Core Message Extraction]
-    F --> G{Platform Selection}
+    subgraph Core["🧠 CORE PROCESSING"]
+        C1[Core Message Extraction]
+        C2[Style Analysis]
+    end
     
-    G --> H1[LinkedIn Generator]
-    G --> H2[Twitter Generator]
-    G --> H3[Blog Generator]
-    G --> H4[Email Generator]
-    G --> H5[Reddit Generator]
-    G --> H6[Substack Generator]
+    subgraph Generation["✍️ PARALLEL GENERATION"]
+        D1[LinkedIn Generator]
+        D2[Twitter/X Generator]
+        D3[Blog Generator]
+        D4[Email Generator]
+        D5[Reddit Generator]
+        D6[Substack Generator]
+    end
     
-    H1 --> I1[Critic Agent]
-    H2 --> I2[Critic Agent]
-    H3 --> I3[Critic Agent]
-    H4 --> I4[Critic Agent]
-    H5 --> I5[Critic Agent]
-    H6 --> I6[Critic Agent]
+    subgraph Cleanup["🧹 POST-PROCESSING"]
+        E1[Remove Em Dashes]
+        E2[Replace AI Words]
+        E3[Add Contractions]
+        E4[Clean Duplicates]
+    end
     
-    I1 -->|FAIL| J1[Reviser Agent]
-    I2 -->|FAIL| J2[Reviser Agent]
-    I3 -->|FAIL| J3[Reviser Agent]
-    I4 -->|FAIL| J4[Reviser Agent]
-    I5 -->|FAIL| J5[Reviser Agent]
-    I6 -->|FAIL| J6[Reviser Agent]
+    subgraph Output["📤 OUTPUT"]
+        F1[Content Validator]
+        F2[Metadata Extraction]
+        F3[Final Content]
+    end
     
-    J1 --> I1
-    J2 --> I2
-    J3 --> I3
-    J4 --> I4
-    J5 --> I5
-    J6 --> I6
+    A1 --> B4
+    A2 --> B1
+    A3 --> B2
+    A4 --> B3
     
-    I1 -->|PASS| K[Content Validator]
-    I2 -->|PASS| K
-    I3 -->|PASS| K
-    I4 -->|PASS| K
-    I5 -->|PASS| K
-    I6 -->|PASS| K
+    B1 --> C1
+    B2 --> C1
+    B3 --> C1
+    B4 --> C1
     
-    K --> L[Platform Metadata]
-    L --> M[Final Output]
+    C1 --> C2
+    C2 --> D1 & D2 & D3 & D4 & D5 & D6
     
-    style C fill:#FF8FA3,stroke:#333,stroke-width:2px
-    style F fill:#00A896,stroke:#333,stroke-width:2px
-    style K fill:#028A3B,stroke:#333,stroke-width:2px
-    style M fill:#FF9E9E,stroke:#333,stroke-width:2px
+    D1 & D2 & D3 & D4 & D5 & D6 --> E1
+    E1 --> E2 --> E3 --> E4
+    
+    E4 --> F1 --> F2 --> F3
+    
+    style C1 fill:#FF6B6B,stroke:#333,stroke-width:2px
+    style E1 fill:#4ECDC4,stroke:#333,stroke-width:2px
+    style F3 fill:#45B7D1,stroke:#333,stroke-width:2px
 ```
 
+### **Simplified Flow (No Critic/Reviser Loop):**
 
-### **Multi-Agent Workflow:**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        USER INPUT                                │
+│     Text Paste  │  URL  │  File Upload  │  Voice Recording      │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    CONTENT EXTRACTION                            │
+│  • Jina AI Reader (URLs)                                        │
+│  • Gemini File API (PDF/DOCX/PPTX)                              │
+│  • Groq Whisper (Voice)                                         │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                 CORE MESSAGE EXTRACTION                          │
+│  • Topic identification                                          │
+│  • Thesis extraction                                             │
+│  • Key insights (5-7)                                            │
+│  • Audience analysis                                             │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              STYLE ANALYSIS (Optional)                           │
+│  • Analyze user's best performing posts                          │
+│  • Extract writing patterns                                      │
+│  • Identify unique phrases                                       │
+│  • Clone voice and personality                                   │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│              PARALLEL CONTENT GENERATION                         │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────┐        │
+│  │ LinkedIn │  │ Twitter  │  │   Blog   │  │  Email   │        │
+│  └──────────┘  └──────────┘  └──────────┘  └──────────┘        │
+│  ┌──────────┐  ┌──────────┐                                     │
+│  │  Reddit  │  │ Substack │  (Max 2 platforms at a time)        │
+│  └──────────┘  └──────────┘                                     │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                 POST-PROCESSING CLEANUP                          │
+│  • Remove em dashes (—) → commas                                 │
+│  • Replace 80+ AI words → human alternatives                     │
+│  • Remove emphasis quotes ("word" → word)                        │
+│  • Add contractions (do not → don't)                             │
+│  • Clean duplicate words                                         │
+└────────────────────────────┬────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    VALIDATION & OUTPUT                           │
+│  • Character count verification                                  │
+│  • Hashtag extraction                                            │
+│  • Hook detection                                                │
+│  • Platform compliance check                                     │
+│  • Final human-like content                                      │
+└─────────────────────────────────────────────────────────────────┘
+```
 
-1. **Core Message Agent** (Groq Chatgpt 120B)
-   - Extracts topic, thesis, insights, audience
-   - Caches for reuse across platforms
+### **Agent Workflow Details:**
 
-2. **Generator Agents** (Platform-Specific)
-   - LinkedIn: Professional, thought leadership
-   - Twitter: Punchy, thread format
-   - Blog: SEO-optimized, structured
-   - Email: Storytelling, 3-email sequence
-
-3. **Critic Agent** (Quality Control)
-   - Validates against platform rules
-   - Scores 0-100 for virality potential
-   - Triggers revision if score < 90
-
-4. **Reviser Agent** (Iterative Improvement)
-   - Fixes issues based on critique
-   - Max 2 iterations per platform
-
-5. **Validator** (Compliance Check)
-   - Character/word count validation
-   - Hashtag count verification
-   - Hook and CTA detection
-   - Provides improvement suggestions
+| Step | Agent | Model | Purpose |
+|------|-------|-------|---------|
+| 1 | Core Message Extractor | Openai-gpt-oss-120B | Extract topic, thesis, insights |
+| 2 | Style Analyzer | Openai-gpt-oss-120B | Clone user's writing voice |
+| 3 | Content Generator | Openai-gpt-oss-120B | Platform-specific content |
+| 4 | Post-Processor | Python (no API) | Remove AI patterns |
+| 5 | Validator | Openai-gpt-oss-120B | Metadata extraction |
 
 ---
 
 ## 📌 D. Tech Stack
 
-### **Backend (FastAPI)**
-- **Framework:** FastAPI 0.121.3
-- **LLM Provider:** Groq (Chatgpt 120B Versatile)
-- **Vision Model:** Google Gemini 2.0 Flash Lite
-- **Document Processing:** Gemini File API
-- **URL Extraction:** Jina AI Reader + BeautifulSoup4
-- **Validation:** Pydantic 2.12.4
+### **Full-Stack Streamlit (No Separate Backend)**
+This is a **serverless Streamlit application** - no FastAPI, no separate backend server.
 
-### **Frontend (Streamlit)**
-- **Framework:** Streamlit (latest)
-- **API Client:** Requests
-- **Styling:** Custom CSS (mobile-responsive)
+### **Core Technologies:**
+| Component | Technology | Purpose |
+|-----------|------------|---------|
+| **Frontend & Backend** | Streamlit 1.40.0 | UI + API integration |
+| **Workflow Engine** | LangGraph 0.2.45 | Agent orchestration |
+| **LLM Provider** | Openai-gpt-oss-120B | Content generation |
+| **File Processing** | Google Gemini 2.0 Flash | PDF/DOCX extraction |
+| **URL Extraction** | Jina AI Reader | JavaScript-capable scraping |
+| **Speech-to-Text** | Groq Whisper | Voice transcription |
 
 ### **Key Libraries:**
 ```
-fastapi==0.121.3
-uvicorn[standard]==0.38.0
-groq==0.36.0
-google-generativeai==0.8.5
-pydantic==2.12.4
-python-multipart==0.0.20
-beautifulsoup4==4.14.2
-pypdf==6.3.0
-python-docx==1.2.0
+# Core
+streamlit==1.40.0
+langgraph==0.2.45
+langchain-core==0.3.15
+langchain-groq==0.2.1
+
+# LLM Providers
+groq==0.11.0
+google-generativeai==0.7.2
+
+# Content Extraction
+requests==2.32.3
+beautifulsoup4==4.12.3
+pypdf==4.3.1
+python-docx==1.1.2
 python-pptx==1.0.2
-streamlit
-requests
-python-dotenv
+
+# Audio
+streamlit-webrtc==0.47.9
+pydub==0.25.1
+
+# Utilities
+python-dotenv==1.0.0
+pydantic==2.9.2
 ```
 
 ### **APIs Used:**
-- **Groq API** - Fast LLM inference (free tier: 30 req/min)
-- **Google Gemini API** - Document OCR & vision
-- **Jina AI Reader** - JavaScript-capable URL extraction (free)
-
-### **Architecture:**
-- **Backend:** FastAPI (REST API)
-- **Frontend:** Streamlit (Web UI)
-- **Deployment:** Streamlit Cloud (Frontend) + Railway/Render (Backend)
+| API | Purpose | Free Tier |
+|-----|---------|-----------|
+| **Groq API** | LLM inference + STT | 30 req/min |
+| **Google Gemini API** | File processing (optional) | 60 req/min |
+| **Jina AI Reader** | URL content extraction | Unlimited |
 
 ---
 
 ## 📌 E. How to Run Your Project
 
 ### **Prerequisites:**
-- Python 3.12+
+- Python 3.11+
 - Groq API Key (free at [console.groq.com](https://console.groq.com))
 - Google API Key (optional, for PDF processing)
 
 ### **Step 1: Clone Repository**
 ```bash
 git clone <your-repo-url>
-cd AI-Vizag
+cd Sankar-main
 ```
 
-### **Step 2: Set Up Backend**
+### **Step 2: Create Virtual Environment**
 ```bash
-# Navigate to backend
-cd backend
-
-# Create virtual environment
 python3 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-# Install dependencies
+### **Step 3: Install Dependencies**
+```bash
 pip install -r requirements.txt
 ```
 
-### **Step 3: Configure Environment Variables**
+### **Step 4: Configure Environment Variables**
 Create `.env` file in root directory:
 ```env
 GROQ_API_KEY=your_groq_api_key_here
 GOOGLE_API_KEY=your_google_api_key_here  # Optional
 ```
 
-### **Step 4: Start Backend**
+### **Step 5: Run the Application**
 ```bash
-# From backend directory
-uvicorn app.main:app --reload --port 8000
-```
-
-Backend will run on: `http://localhost:8000`
-
-### **Step 5: Start Frontend**
-Open a new terminal:
-```bash
-# From root directory
-pip install -r requirements.txt
 streamlit run app.py
 ```
 
-Frontend will run on: `http://localhost:8501`
+App will run on: `http://localhost:8501`
 
 ### **Step 6: Use the App**
 1. Open browser to `http://localhost:8501`
-2. Enter API keys in sidebar (or use .env)
-3. Choose input method (Text/URL/File)
+2. Enter API key in sidebar (or use .env)
+3. Choose input method (Text/URL/File/Voice)
 4. Select target platforms (max 2)
-5. Click "Generate Content"
-6. View platform-optimized results with metadata
+5. Optional: Paste your best posts for style matching
+6. Click "Generate Content"
+7. View human-like, platform-optimized content!
 
 ---
 
@@ -266,177 +329,152 @@ Frontend will run on: `http://localhost:8501`
 
 ### **Required API Keys:**
 
-1. **Groq API Key** (Required)
-   - Get free key: [console.groq.com](https://console.groq.com)
-   - Free tier: 30 requests/minute
-   - Used for: All text generation
-
-2. **Google API Key** (Optional)
-   - Get key: [Google AI Studio](https://makersuite.google.com/app/apikey)
-   - Free tier: 60 requests/minute
-   - Used for: PDF/DOCX/PPTX processing
-   - **Fallback:** pypdf/python-docx if not provided
+| API | Required? | Get It Here | Free Tier |
+|-----|-----------|-------------|-----------|
+| **Groq** | ✅ Yes | [console.groq.com](https://console.groq.com) | 30 req/min |
+| **Google Gemini** | ❌ Optional | [makersuite.google.com](https://makersuite.google.com/app/apikey) | 60 req/min |
 
 ### **Usage Notes:**
 - ⚠️ **Never commit API keys** to GitHub
 - ✅ Use `.env` file (already in `.gitignore`)
-- ✅ Or input keys via Streamlit UI
-- ✅ For deployment: Use Streamlit Secrets or environment variables
-
-### **Rate Limits:**
-- Groq: 30 req/min (free tier)
-- Google Gemini: 60 req/min (free tier)
-- Jina AI: Unlimited (free)
+- ✅ Or input keys via Streamlit sidebar
+- ✅ For deployment: Use Streamlit Secrets
 
 ---
 
-## 📌 G. Sample Inputs & Outputs
+## 📌 G. Features
 
-### **Input Example:**
-**Source:** Blog post about "How to Choose Running Shoes for Marathon Training" (2000 words)
+### **Input Methods:**
+- ✅ Text paste (direct input)
+- ✅ URL extraction (Jina AI Reader)
+- ✅ File upload (PDF, DOCX, PPTX, TXT, MD)
+- ✅ Voice recording (Groq Whisper STT)
 
-**Platforms Selected:** LinkedIn, Twitter/X
+### **Platform Support:**
+| Platform | Character Limit | Hashtags | Format |
+|----------|-----------------|----------|--------|
+| LinkedIn | 1,300 | 3-5 | Professional post |
+| Twitter/X | 280/tweet | 1-2 | Thread (3-7 tweets) |
+| Short Blog | 500-700 words | N/A | SEO-optimized article |
+| Email Sequence | 3 emails | N/A | Storytelling series |
+| Reddit | 300-500 words | None | Authentic discussion |
+| Substack | 800-1200 words | N/A | Newsletter essay |
 
-**Audience:** Fitness enthusiasts
+### **Anti-AI Detection:**
+- 🚫 Em dashes removed → replaced with commas
+- 🚫 80+ AI buzzwords replaced → human alternatives
+- 🚫 Quote emphasis removed → natural text
+- ✅ Contractions added → sounds natural
+- ✅ Sentence variety → human rhythm
+- ✅ Authentic markers → fragments, casual words
 
-### **Output Example:**
+### **A/B Testing:**
+- Generate 3 distinct variations
+- Different hooks and angles:
+  - Variation 1: Bold/Contrarian
+  - Variation 2: Story-driven
+  - Variation 3: Tactical/How-To
 
-#### **LinkedIn (1,287 characters):**
+### **Style Matching:**
+- Paste 1-3 of your best performing posts
+- AI analyzes your unique voice
+- New content matches your style
+
+---
+
+## 📌 H. Sample Output
+
+### **Input:**
+> "How to choose running shoes for marathon training" (2000 word blog)
+
+### **Generated LinkedIn Post:**
+
 ```
-Training for your first marathon? The right shoes matter more than you think.
+Training for your first marathon? Your shoes can make or break race day.
 
-3 costly mistakes runners make when choosing marathon shoes:
+3 mistakes I see new runners make:
 
 1. Buying based on brand hype
-Nike, Adidas, ASICS—great brands, but not all shoes fit all feet. 
-Pronation type matters more than logo.
+Nike, Adidas, ASICS are great. But not every shoe fits every foot. 
+Your pronation type matters more than the logo.
 
-2. Ignoring drop height
-Heel-to-toe drop affects your stride. Most need 8-10mm drop. 
-Minimalist shoes (0-4mm) increase injury risk for beginners.
+2. Ignoring heel drop
+That 0-4mm minimalist drop? It's 3x more likely to cause injury for beginners.
+Most runners need 8-10mm. Your achilles will thank you.
 
 3. Skipping the gait analysis
-Running stores offer free analysis. Takes 10 minutes.
-Can prevent stress fractures and knee pain over 500+ miles.
+Running stores do this for free. Takes 10 minutes.
+Can save you from stress fractures over 500+ training miles.
 
-Pro tip: Buy shoes at 5 PM when feet are most swollen—
-matches your size at mile 20 of a marathon.
+Pro tip: Buy shoes at 5 PM when your feet are swollen.
+Matches your foot size at mile 20.
 
-What's your go-to marathon shoe? 👟
+What's your go-to marathon shoe?
 
 #MarathonTraining #RunningTips #FitnessGoals
 ```
 
-**Metadata:**
-- Characters: 1,287/1,300 ✅
-- Hashtags: 3 ✅
-- Hook: ✅ (Question)
-- CTA: ✅ (Engagement question)
-- Compliance: ✅
-
-#### **Twitter Thread (5 tweets):**
-```
-1/5 Training for a marathon?
-
-Your shoes can make or break your race.
-
-Here's what 73% of first-time marathoners get wrong when buying running shoes: 🧵
-
-2/5 Mistake #1: Buying based on hype
-
-That shoe your favorite runner wears? Might destroy your knees.
-
-Foot strike pattern, arch height, pronation—these matter more than any brand.
-
-3/5 Mistake #2: Ignoring heel drop
-
-Drop = height difference from heel to toe
-
-Most runners need 8-10mm
-Minimalist (0-4mm) = 3x higher injury risk for beginners
-
-Your Achilles will thank you.
-
-4/5 Mistake #3: Skipping gait analysis
-
-Most running stores do it FREE
-Takes 10 minutes
-Can save you from stress fractures over 500+ training miles
-
-Worth it.
-
-5/5 Pro tip from elite runners:
-
-Buy shoes at 5 PM when feet are swollen
-Matches your foot size at mile 20 of the race
-
-No painful surprises on race day 👟
-
-What's your go-to marathon shoe? #Running
-```
-
-**Metadata:**
-- Thread length: 5 tweets ✅
-- Chars per tweet: <280 ✅
-- Hashtags: 1 ✅
-- Hook: ✅ (Stat)
-- CTA: ✅ (Question)
-
----
-
-
-## 🚀 Additional Features
-
-### **Platform-Specific Optimizations:**
-- ✅ Character limit enforcement
-- ✅ Hashtag auto-generation (3-5 for LinkedIn, 1-2 for Twitter)
-- ✅ Hook detection (questions, stats, bold claims)
-- ✅ CTA validation
-- ✅ Format compliance (thread numbering, line breaks)
-
-### **Smart Extraction:**
-- ✅ Jina AI for JavaScript-heavy sites
-- ✅ Gemini File API for PDFs, DOCX, PPTX
-- ✅ Fallback extractors (pypdf, python-docx)
-
-### **Quality Control:**
-- ✅ Multi-iteration critique loop
-- ✅ Virality score prediction (0-100)
-- ✅ Platform best practices validation
-- ✅ Improvement suggestions
-
-### **Mobile-Responsive UI:**
-- ✅ Works on phone, tablet, desktop
-- ✅ Custom CSS breakpoints
-- ✅ Touch-friendly controls
+**Notice:** No em dashes, no "crucial", no "leverage", natural contractions.
 
 ---
 
 ## 📊 Performance Metrics
 
-- **Generation Speed:** <2 seconds per platform
-- **Accuracy:** 95%+ platform compliance
-- **Quality Score:** Average 85/100 (virality prediction)
-- **Supported Platforms:** 6 (LinkedIn, Twitter, Blog, Email, Reddit, Substack)
-- **Input Formats:** Text, URL, PDF, DOCX, PPTX, TXT, MD
+| Metric | Value |
+|--------|-------|
+| **Generation Speed** | 15-25 seconds (2 platforms) |
+| **API Calls** | 3-4 per generation |
+| **Platforms Supported** | 6 |
+| **Input Formats** | 5 (Text, URL, PDF, DOCX, Voice) |
+| **A/B Variations** | 3 per platform |
+| **AI Detection Pass Rate** | High (post-processing cleanup) |
 
 ---
 
 ## 🔮 Future Roadmap
 
 1. **More Platforms:** Instagram, YouTube, TikTok
-2. **Image Generation:** Auto-generate platform-specific visuals
-3. **Scheduling Integration:** Direct posting to platforms
-4. **Analytics:** Track performance of generated content
-5. **Team Collaboration:** Multi-user workspaces
-6. **Brand Voice Training:** Custom tone profiles
+2. **First Comment Generator:** Auto-generate engagement-boosting first comment
+3. **Content Calendar:** Generate 7 days of content from one source
+4. **Viral Hook Library:** Pre-built hook templates
+5. **Scheduling Integration:** Direct posting to platforms
+6. **Analytics Dashboard:** Track generated content performance
+
+---
+
+## 📁 Project Structure
+
+```
+Sankar-main/
+├── app.py                 # Main Streamlit application
+├── workflow.py            # LangGraph workflow (optimized)
+├── config.py              # Configuration & constants
+├── styles.py              # Custom CSS styling
+├── requirements.txt       # Python dependencies
+├── .streamlit/
+│   └── config.toml        # Streamlit configuration
+├── agents/
+│   ├── __init__.py
+│   ├── prompts.py         # Enhanced prompts with anti-AI rules
+│   ├── schemas.py         # Pydantic schemas
+│   ├── core_message_node.py
+│   ├── generator_node.py  # Content generation
+│   ├── post_analyzer_node.py  # Style analysis
+│   └── validator_node.py
+├── utils/
+│   ├── __init__.py
+│   ├── extractors.py      # URL/File extraction
+│   ├── content_cleaner.py # Post-processing cleanup
+│   ├── cache_manager.py   # Style caching
+│   └── stt_handler.py     # Speech-to-text
+└── README.md
+```
 
 ---
 
 ## 👥 Team
-
-**Team Name:** Sankar
-**Members:** Anuj Patel
+ 
+**Members:** Anuj Patel  
 **Track:** Technical
 
 ---
@@ -448,5 +486,3 @@ MIT License - Built for Build-A-Thon 2025
 ---
 
 **Built with ❤️ for the builder community**
-=======
-# Sankar
